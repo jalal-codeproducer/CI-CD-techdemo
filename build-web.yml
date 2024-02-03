@@ -1,0 +1,35 @@
+name: Flutter Web Build
+
+on: push
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+    
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.5.3'
+          channel: 'stable'
+          with-web: false
+          flutter-verbose: true
+          dart-version: '3.1.5' 
+          
+      - name: update
+        run: flutter upgrade
+        
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build web
+        run: flutter build web
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-build
+          path: build/web 
